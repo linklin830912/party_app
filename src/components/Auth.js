@@ -5,9 +5,13 @@ import Cookies from "universal-cookie";
 export const Auth = () => {
     const cookies = new Cookies();
     const signInWithGoogle = async () => {
-        const result = await signInWithPopup(auth, provider);
-        console.log(result);
-        cookies.set("auth-token", result.user.refreshToken);
+        try { 
+            const result = await signInWithPopup(auth, provider);
+            cookies.set("auth-token", result.user.refreshToken);
+        } catch (err) { 
+            console.error(err);
+        }
+        
     };
 
     return (
