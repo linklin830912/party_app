@@ -1,13 +1,17 @@
 import { auth, provider } from "../firebase.config";
 import { signInWithPopup } from "firebase/auth";
 import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
-export const Auth = () => {
-    const cookies = new Cookies();
+type AuthPageType = {
+    setIsAuth : (x:boolean)=>void
+}
+function AuthPage (props: AuthPageType) {
     const signInWithGoogle = async () => {
-        try { 
+        try {
             const result = await signInWithPopup(auth, provider);
             cookies.set("auth-token", result.user.refreshToken);
+            props.setIsAuth(cookies.get("auth-token"));
         } catch (err) { 
             console.error(err);
         }
@@ -21,3 +25,5 @@ export const Auth = () => {
         </div>
     );
 };
+
+export default AuthPage;
